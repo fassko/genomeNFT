@@ -1,0 +1,55 @@
+{
+    "name": "Genome NFT",
+    "description": "Genome NFT",
+    "image": "https://game.genome/item-id-666.png",
+    "attributes": [
+      {
+        "traitType": "BackgroundColor",
+        "value": 60
+      },
+      {
+        "traitType": "BackgroundEffect",
+        "value": 30
+      },
+      {
+        "traitType": "Wings",
+        "value": 10
+      },
+      {
+        "traitType": "SkinColor",
+        "value": 40
+      },
+      {
+        "traitType": "SkinPattern",
+        "value": 10
+      },
+      {
+        "traitType": "Body",
+        "value": 100
+      },
+      {
+        "traitType": "Mouth",
+        "value": 50
+      },
+      {
+        "traitType": "Eyes",
+        "value": 60
+      },
+      {
+        "traitType": "Hat",
+        "value": 100
+      },
+      {
+        "traitType": "Pet",
+        "value": 10
+      },
+      {
+        "traitType": "Accessory",
+        "value": 25
+      },
+      {
+        "traitType": "Border",
+        "value": 30
+      }
+    ]
+}
