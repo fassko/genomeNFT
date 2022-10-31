@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
+import "hardhat/console.sol";
+
 import {ERC721Metadata} from "@solidstate/contracts/token/ERC721/metadata/ERC721Metadata.sol";
 import {ERC721MetadataStorage} from "@solidstate/contracts/token/ERC721/metadata/ERC721MetadataStorage.sol";
 import {Base64} from "base64-sol/base64.sol";
@@ -18,8 +20,9 @@ contract GenomeNFT is ERC721Metadata {
   uint256 private tokenId;
   mapping(uint256 => bytes) private genomeNfts;
 
+  event GenomeNFTMinted(uint256 id);
+
   struct TokenURIParams {
-    uint256 tokenId;
     uint256 backgroundColor;
     uint256 backgroundEffect;
     uint256 wings;
@@ -51,16 +54,22 @@ contract GenomeNFT is ERC721Metadata {
     string memory description,
     TokenURIParams memory attributes
   ) external returns (uint256) {
-    tokenId += 1;
+    tokenId = tokenId + 1;
 
     genomeNfts[tokenId] = bytes(generateNFTData(name, description, attributes));
     _mint(_address, tokenId);
 
+    emit GenomeNFTMinted(tokenId);
+
     return tokenId;
   }
 
-  function getGenomeTokenURI(uint256 id) external view returns (string memory) {
+  function getTokenURI(uint256 id) public view returns (string memory) {
     return string(genomeNfts[id]);
+  }
+
+  function tokenURI(uint256 id) external view override returns (string memory) {
+    return getTokenURI(id);
   }
 
   function generateNFTData(
