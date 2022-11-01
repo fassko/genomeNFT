@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {ERC721Metadata} from "@solidstate/contracts/token/ERC721/metadata/ERC721Metadata.sol";
 import {ERC721MetadataStorage} from "@solidstate/contracts/token/ERC721/metadata/ERC721MetadataStorage.sol";
+import {ERC721Metadata} from "@solidstate/contracts/token/ERC721/metadata/ERC721Metadata.sol";
 
 import {NFTGenerator} from "./libraries/NFTGenerator.sol";
 import {TokenURIParams} from "./Types.sol";
@@ -15,14 +15,11 @@ import {TokenURIParams} from "./Types.sol";
 
 contract GenomeNFT is ERC721Metadata {
   // keep token ID
-  uint16 private tokenId;
+  uint16 private _tokenId;
 
   // keeping genome NFTs on chain
   // 5000 nfts so can use uint16
   mapping(uint16 => bytes) private genomeNfts;
-
-  // event to get the newly minted token ID
-  event GenomeNFTMinted(uint256 id);
 
   constructor(
     string memory tokenName,
@@ -42,17 +39,15 @@ contract GenomeNFT is ERC721Metadata {
     string memory description,
     TokenURIParams memory attributes
   ) external returns (uint16) {
-    tokenId = tokenId + 1;
+    _tokenId = _tokenId + 1;
 
     // convert nft data to bytes
-    genomeNfts[tokenId] = bytes(
-      NFTGenerator.generate(nftName, description, attributes)
+    genomeNfts[_tokenId] = NFTGenerator.generate(
+      nftName,
+      description,
+      attributes
     );
-    _mint(_address, tokenId);
-
-    emit GenomeNFTMinted(tokenId);
-
-    return tokenId;
+    _mint(_address, _tokenId);
   }
 
   function tokenURI(uint256 id) external view override returns (string memory) {

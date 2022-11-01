@@ -1,6 +1,5 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { ethers } from "hardhat";
-import { GenomeNFT } from "../typechain-types";
 
 describe("GenomeNFT", function () {
 
@@ -17,7 +16,7 @@ describe("GenomeNFT", function () {
     it("Should set the right unlockTime", async function () {
       const { genomeNFT, otherAccount } = await loadFixture(deployFixture);
 
-      const params: GenomeNFT.TokenURIParamsStruct = {
+      const params = {
         backgroundColor: 60,
         backgroundEffect: 30,
         wings: 10,
@@ -33,11 +32,9 @@ describe("GenomeNFT", function () {
       };
 
       const tnx = await genomeNFT.mint(otherAccount.address, "Genome", "Test Genome", params);
-      const tnxResult = await tnx.wait();
+      const result = await tnx.wait();
 
-      const event = tnxResult?.events?.find(event => event.event == "GenomeNFTMinted");
-      const tokenId = event?.args?.[0];
-
+      const tokenId = result.events?.[0].args?.[2]
       const tokenURI = await genomeNFT.tokenURI(tokenId);
 
       console.log(tokenURI);

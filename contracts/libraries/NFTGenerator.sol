@@ -8,40 +8,44 @@ import {NFTSVG} from "./NFTSVG.sol";
 import {TokenURIParams} from "../Types.sol";
 
 library NFTGenerator {
-  // to convert int to string
+  // to convert uint to string
   using UintUtils for uint8;
 
+  // generate NFT data according to the ERC721 Metadata JSON Schema
   function generate(
-    string memory nftName,
+    string memory name,
     string memory description,
     TokenURIParams memory _attributes
-  ) internal pure returns (string memory) {
+  ) internal pure returns (bytes memory) {
     return
-      string(
-        abi.encodePacked(
-          "data:application/json;base64,",
-          bytes(
-            abi.encodePacked(
-              "{",
-              '"image":"',
-              "data:image/svg+xml;base64,",
-              // Base64 encode image so a browser can read it
-              Base64.encode(bytes(NFTSVG.buildSVGImage())),
-              '",',
-              '"description":"',
-              description,
-              '",',
-              '"name":"',
-              nftName,
-              '",',
-              generateAttributes(_attributes),
-              "}"
+      bytes(
+        string(
+          abi.encodePacked(
+            "data:application/json;base64,",
+            bytes(
+              abi.encodePacked(
+                "{",
+                '"image":"',
+                "data:image/svg+xml;base64,",
+                // Base64 encode image so a browser can read it
+                Base64.encode(bytes(NFTSVG.buildSVGImage())),
+                '",',
+                '"description":"',
+                description,
+                '",',
+                '"name":"',
+                name,
+                '",',
+                generateAttributes(_attributes),
+                "}"
+              )
             )
           )
         )
       );
   }
 
+  // generate attributes array
   function generateAttributes(TokenURIParams memory attributes)
     private
     pure
