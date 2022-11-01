@@ -13,7 +13,12 @@ const config: HardhatUserConfig = {
       tasks: ['compile'],
       files: ['./contracts'],
       verbose: true,
-    }
+    },
+    test: {
+      tasks: [{ command: 'test', params: { testFiles: ['{path}'] } }],
+      files: ['./test/**/*'],
+      verbose: true,
+    },
   },
   gasReporter: {
     enabled: (process.env.REPORT_GAS) ? true : false

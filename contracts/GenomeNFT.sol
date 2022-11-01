@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 import {ERC721Metadata} from "@solidstate/contracts/token/ERC721/metadata/ERC721Metadata.sol";
 import {ERC721MetadataStorage} from "@solidstate/contracts/token/ERC721/metadata/ERC721MetadataStorage.sol";
@@ -13,48 +13,55 @@ import {UintUtils} from "@solidstate/contracts/utils/UintUtils.sol";
  */
 
 contract GenomeNFT is ERC721Metadata {
-  using UintUtils for uint256;
+  // to convert int to string
+  using UintUtils for uint8;
 
-  uint256 private tokenId;
-  mapping(uint256 => bytes) private genomeNfts;
+  // keep token ID
+  uint16 private tokenId;
+
+  // keeping genome NFTs on chain
+  // 5000 nfts so can use uint16
+  mapping(uint16 => bytes) private genomeNfts;
 
   event GenomeNFTMinted(uint256 id);
 
   struct TokenURIParams {
-    uint256 backgroundColor;
-    uint256 backgroundEffect;
-    uint256 wings;
-    uint256 skinColor;
-    uint256 skinPattern;
-    uint256 body;
-    uint256 mouth;
-    uint256 eyes;
-    uint256 hat;
-    uint256 pet;
-    uint256 accessory;
-    uint256 border;
+    uint8 backgroundColor;
+    uint8 backgroundEffect;
+    uint8 wings;
+    uint8 skinColor;
+    uint8 skinPattern;
+    uint8 body;
+    uint8 mouth;
+    uint8 eyes;
+    uint8 hat;
+    uint8 pet;
+    uint8 accessory;
+    uint8 border;
   }
 
   constructor(
-    string memory name,
-    string memory symbol,
+    string memory tokenName,
+    string memory tokenSymbol,
     string memory baseURI
   ) {
     ERC721MetadataStorage.Layout storage l = ERC721MetadataStorage.layout();
-    l.name = name;
-    l.symbol = symbol;
+    l.name = tokenName;
+    l.symbol = tokenSymbol;
     l.baseURI = baseURI;
   }
 
   function mint(
     address _address,
-    string memory name,
+    string memory nftName,
     string memory description,
     TokenURIParams memory attributes
-  ) external returns (uint256) {
+  ) external returns (uint16) {
     tokenId = tokenId + 1;
 
-    genomeNfts[tokenId] = bytes(generateNFTData(name, description, attributes));
+    genomeNfts[tokenId] = bytes(
+      generateNFTData(nftName, description, attributes)
+    );
     _mint(_address, tokenId);
 
     emit GenomeNFTMinted(tokenId);
@@ -62,47 +69,35 @@ contract GenomeNFT is ERC721Metadata {
     return tokenId;
   }
 
-  function getTokenURI(uint256 id) public view returns (string memory) {
-    return string(genomeNfts[id]);
-  }
-
   function tokenURI(uint256 id) external view override returns (string memory) {
-    return getTokenURI(id);
+    return string(genomeNfts[uint16(id)]);
   }
 
   function generateNFTData(
-    string memory name,
+    string memory nftName,
     string memory description,
     TokenURIParams memory _attributes
   ) private pure returns (string memory) {
-    string memory base64image;
-    {
-      string memory svgImage = buildSVGImage();
-      base64image = Base64.encode(bytes(svgImage));
-    }
-    string memory attributes = generateAttributes(_attributes);
-
     return
       string(
         abi.encodePacked(
           "data:application/json;base64,",
-          Base64.encode(
-            bytes(
-              abi.encodePacked(
-                "{",
-                '"image":"',
-                "data:image/svg+xml;base64,",
-                base64image,
-                '",',
-                '"description":"',
-                description,
-                '",',
-                '"name":"',
-                name,
-                '",',
-                attributes,
-                "}"
-              )
+          bytes(
+            abi.encodePacked(
+              "{",
+              '"image":"',
+              "data:image/svg+xml;base64,",
+              // Base64 encode image so a browser can read it
+              Base64.encode(bytes(buildSVGImage())),
+              '",',
+              '"description":"',
+              description,
+              '",',
+              '"name":"',
+              nftName,
+              '",',
+              generateAttributes(_attributes),
+              "}"
             )
           )
         )
@@ -158,13 +153,15 @@ contract GenomeNFT is ERC721Metadata {
       );
   }
 
+  // won't implement SVG image creation, just a wrapper
+  // image will be a base64 encoded SVG image stored on chain
   function buildSVGImage() private pure returns (string memory) {
-    // won't implement SVG image creation, just a wrapper
-
     return
       string(
         abi.encodePacked(
           '<svg width="300" height="378" viewBox="0 0 300 378" fill="none" xmlns="http://www.w3.org/2000/svg">',
+          // need to generate here rest of the image
+          // that is out of scope of this test task
           "</svg>"
         )
       );

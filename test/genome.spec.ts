@@ -33,14 +33,12 @@ describe("GenomeNFT", function () {
       };
 
       const tnx = await genomeNFT.mint(otherAccount.address, "Genome", "Test Genome", params);
+      const tnxResult = await tnx.wait();
 
-      const txResult = await tnx.wait();
-      const event = txResult?.events?.find(event => event.event == "GenomeNFTMinted");
-      const tokenId = event?.args![0];
+      const event = tnxResult?.events?.find(event => event.event == "GenomeNFTMinted");
+      const tokenId = event?.args?.[0];
 
-      console.log(tokenId);
-
-      const tokenURI = await genomeNFT.getTokenURI(1);
+      const tokenURI = await genomeNFT.tokenURI(tokenId);
 
       console.log(tokenURI);
     });
