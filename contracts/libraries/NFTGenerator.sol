@@ -1,10 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+// use base64 encode library
 import {Base64} from "base64-sol/base64.sol";
+
+// import Uint utils to convert int to string
 import {UintUtils} from "@solidstate/contracts/utils/UintUtils.sol";
 
+// export SVG creation to a library
 import {NFTSVG} from "./NFTSVG.sol";
+
+// common type exported to a separate file
 import {TokenURIParams} from "../Types.sol";
 
 library NFTGenerator {
@@ -27,7 +33,7 @@ library NFTGenerator {
                 "{",
                 '"image":"',
                 "data:image/svg+xml;base64,",
-                // Base64 encode image so a browser can read it
+                // Base64 encode image so any morend browser can read it
                 Base64.encode(bytes(NFTSVG.buildSVGImage())),
                 '",',
                 '"description":"',

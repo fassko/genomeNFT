@@ -7,7 +7,22 @@ import Dotenv from 'dotenv';
 Dotenv.config();
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.17",
+  solidity: {
+    version: "0.8.17",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 2000,
+        details: {
+          yul: true,
+          yulDetails: {
+            stackAllocation: true,
+            optimizerSteps: "dhfoDgvulfnTUtnIf"
+          }
+        }
+      },
+    }
+  },
   watcher: {
     contracts: {
       tasks: ['compile'],
@@ -21,7 +36,8 @@ const config: HardhatUserConfig = {
     },
   },
   gasReporter: {
-    enabled: (process.env.REPORT_GAS) ? true : false
+    enabled: (process.env.REPORT_GAS) ? true : false,
+    showTimeSpent: true
   }
 };
 
