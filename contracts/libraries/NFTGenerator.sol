@@ -25,9 +25,9 @@ library NFTGenerator {
   ) internal pure returns (bytes memory) {
     return
       bytes(
-        string(
-          abi.encodePacked(
-            "data:application/json;base64,",
+        abi.encodePacked(
+          "data:application/json;base64,",
+          Base64.encode(
             bytes(
               abi.encodePacked(
                 "{",
