@@ -45,7 +45,7 @@ contract GenomeNFT is ERC721Metadata {
     address _address,
     string memory nftName,
     string memory description,
-    TokenURIParams memory attributes
+    TokenURIParams calldata attributes
   ) public {
     // we can use unchecked asuming that there will be only 5k NFTs
     // and no overflow would happen

@@ -21,7 +21,7 @@ library NFTGenerator {
   function generate(
     string memory name,
     string memory description,
-    TokenURIParams memory _attributes
+    TokenURIParams calldata _attributes
   ) internal pure returns (bytes memory) {
     return
       bytes(
@@ -52,7 +52,7 @@ library NFTGenerator {
   }
 
   // generate attributes array
-  function generateAttributes(TokenURIParams memory attributes)
+  function generateAttributes(TokenURIParams calldata attributes)
     private
     pure
     returns (string memory)
