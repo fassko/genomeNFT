@@ -15,7 +15,7 @@ import {TokenURIParams} from "../Types.sol";
 
 library NFTGenerator {
   // to convert uint to string
-  using UintUtils for uint8;
+  using UintUtils for uint256;
 
   // generate NFT data according to the ERC721 Metadata JSON Schema
   function generate(

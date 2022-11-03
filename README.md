@@ -14,6 +14,8 @@ NFT image is stored on the chain using SVG base64 encoded because any modern bro
 
 To retrieve the NFT data, we get the bytes from the mapping, convert them to a string, and return it.
 
+Option B is to use `memory`, not the `calldata`, passing the parameters struct `TokenURIParams`. That can save on minting but more on deployment.
+
 ## Running the project
 
 ### Install dependencies

@@ -2,18 +2,17 @@
 pragma solidity ^0.8.17;
 
 // NFT attributes
-// using uint8 because we don't need more
 struct TokenURIParams {
-  uint8 backgroundColor;
-  uint8 backgroundEffect;
-  uint8 wings;
-  uint8 skinColor;
-  uint8 skinPattern;
-  uint8 body;
-  uint8 mouth;
-  uint8 eyes;
-  uint8 hat;
-  uint8 pet;
-  uint8 accessory;
-  uint8 border;
+  uint256 backgroundColor;
+  uint256 backgroundEffect;
+  uint256 wings;
+  uint256 skinColor;
+  uint256 skinPattern;
+  uint256 body;
+  uint256 mouth;
+  uint256 eyes;
+  uint256 hat;
+  uint256 pet;
+  uint256 accessory;
+  uint256 border;
 }
